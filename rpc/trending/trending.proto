@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package trending;
+option go_package="./trending";
+
+message Request {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message Response {
+  int32 total = 1;
+  repeated string content = 2;
+}
+
+service Trending {
+  rpc GetList(Request) returns(Response);
+}

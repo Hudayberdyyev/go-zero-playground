@@ -1,0 +1,55 @@
+syntax = "v1"
+
+info (
+	title: // TODO: add title
+	desc: // TODO: add description
+	author: "hudayberdyyev"
+	email: "hudayberdyyev.ahmet@gmail.com"
+)
+
+type (
+	signInReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	signInResp {
+		Token string `json:"access_token"`
+	}
+)
+
+type (
+	identifyReq {
+	}
+
+	identifyResp {
+		Username string `json:"username"`
+	}
+)
+
+type (
+	trendingReq {
+	}
+
+	trendingResp {
+		Content []string `json:"content"`
+	}
+)
+@server(
+	middleware: AuthorizationMiddleware
+)
+service gateway-api {
+	@handler Identify
+	get /identify(identifyReq) returns(identifyResp)
+
+	@handler Trending
+	get /trending(trendingReq) returns(trendingResp)
+}
+
+@server(
+	middleware: OtherMiddleware
+)
+service gateway-api {
+	@handler SignIn
+	post /signIn(signInReq) returns(signInResp)
+}
