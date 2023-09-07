@@ -1,358 +1,11 @@
 syntax = "v1"
 
-import "model.api"
-
-type (
-	getChannelInfoReq {
-		YoutubeId string `path:"youtubeId"`
-		baseReqHeaders
-	}
-	getChannelInfoResp {
-		YoutubeId        string `json:"youtubeId"`
-		Title            string `json:"title"`
-		AvatarUrl        string `json:"avatarUrl"`
-		BannerUrl        string `json:"bannerUrl"`
-		Description      string `json:"description"`
-		SubscribersCount int    `json:"subscribersCount"`
-		UploadedDate     string `json:"uploadedDate"`
-		IsSubscribed     bool   `json:"isSubscribed"`
-	}
-)
-type (
-	getChannelVideosReq {
-		YoutubeId string `path:"youtubeId"`
-		pagination
-		baseReqHeaders
-	}
-	getChannelVideosResp {
-		Content  []ChannelVideo `json:"content"`
-		NextPage int            `json:"nextPage"`
-	}
-)
-
-type (
-	channelSubscriptionReq {
-		Action    string `form:"action,options=subscribe|unsubscribe"`
-		YoutubeId string `path:"youtubeId"`
-		baseReqHeaders
-	}
-	// message response
-)
-
-type (
-	getTrendingListReq {
-		Genre string `form:"genre"`
-		pagination
-		baseReqHeaders
-	}
-	getTrendingListResp {
-		Content  []TrendingVideo `json:"content"`
-		NextPage int             `json:"nextPage"`
-	}
-)
-
-type (
-	getVideoInfoReq {
-		YoutubeId string `path:"youtubeId"`
-		baseReqHeaders
-	}
-
-	getVideoInfoResp {
-		YoutubeId              string         `json:"youtubeId"`
-		Title                  string         `json:"title"`
-		Description            string         `json:"description"`
-		Thumbnail              string         `json:"thumbnail"`
-		Duration               int            `json:"duration"`
-		AdUri                  string         `json:"adUri"`
-		Hls                    string         `json:"hls"`
-		IsSubscribed           bool           `json:"isSubscribed"`
-		Likes                  int            `json:"likes"`
-		VideoReaction          string         `json:"videoReaction"`
-		WatchedTime            int            `json:"watchedTime"`
-		UploadedDate           string         `json:"uploadedDate"`
-		ChannelName            string         `json:"channelName"`
-		ChannelAvatarUrl       string         `json:"channelAvatarUrl"`
-		ChannelYoutubeId       string         `json:"channelYoutubeId"`
-		ChannelSubscriberCount int            `json:"channelSubscriberCount"`
-		RelatedVideos          []RelatedVideo `json:"relatedVideos"`
-	}
-)
-
-type (
-	getChannelPlaylistsReq {
-		YoutubeId string `path:"youtubeId"`
-		pagination
-		baseReqHeaders
-	}
-	getChannelPlaylistsResp {
-		Content  []ChannelPlaylist `json:"content"`
-		NextPage int               `json:"nextPage"`
-	}
-)
-
-type (
-	getPlaylistInfoReq {
-		PlaylistId string `path:"playlistId"`
-		baseReqHeaders
-	}
-	getPlaylistInfoResp {
-		PlaylistId       string `json:"playlistId"`
-		Title            string `json:"title"`
-		Description      string `json:"description"`
-		Thumbnail        string `json:"thumbnail"`
-		ChannelName      string `json:"channelName"`
-		ChannelYoutubeId string `json:"channelYoutubeId"`
-		IsReadOnly       bool   `json:"isReadOnly"`
-		VideosCount      int    `json:"videosCount"`
-		UpdatedDate      string `json:"updatedAt"`
-	}
-)
-
-type (
-	getPlaylistVideosReq {
-		PlaylistId string `path:"playlistId"`
-		pagination
-		baseReqHeaders
-	}
-
-	getPlaylistVideosResp {
-		Content  []PlaylistVideo `json:"content"`
-		NextPage int             `json:"nextPage"`
-	}
-)
-
-type (
-	createUserPlaylistReq {
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		baseReqHeaders
-	}
-	// message response
-)
-
-type (
-	getUserPlaylistsReq {
-		pagination
-		baseReqHeaders
-	}
-
-	getUserPlaylistsResp {
-		Content  []ChannelPlaylist `json:"content"`
-		NextPage int               `json:"nextPage"`
-	}
-)
-
-type (
-	getUserPlaylistsByVideoReq {
-		VideoYoutubeId string `path:"videoYoutubeId"`
-		pagination
-		baseReqHeaders
-	}
-
-	getUserPlaylistsByVideoResp {
-		Content  []UserPlaylistForVideo `json:"content"`
-		NextPage int                    `json:"nextPage"`
-	}
-)
-
-type (
-	playlistVideoActionReq {
-		VideoYoutubeId string `json:"videoYoutubeId"`
-		PlaylistId     string `path:"playlistId"`
-		baseReqHeaders
-	}
-	//message response
-)
-
-type (
-	updateUserPlaylistReq {
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		PlaylistId  string `path:"playlistId"`
-		baseReqHeaders
-	}
-	// message response
-)
-
-type (
-	deleteUserPlaylistReq {
-		PlaylistId string `path:"playlistId"`
-		baseReqHeaders
-	}
-	//message response
-)
-
-type (
-	importYoutubePlaylistReq {
-		ChannelPlaylistId string `path:"channelPlaylistId"`
-		baseReqHeaders
-	}
-	//message response
-)
-
-type (
-	videoReactionReq {
-		Action    string `form:"action,options=like|dislike|revertLike|revertDislike"`
-		YoutubeId string `path:"youtubeId"`
-		baseReqHeaders
-	}
-	//message response
-)
-type (
-	videoIncViewReq {
-		YoutubeId string `path:"youtubeId"`
-		baseReqHeaders
-	}
-	//message response
-)
-
-type (
-	videoSetWatchTimeReq {
-		WatchedTime int    `json:"watchedTime"`
-		YoutubeId   string `path:"youtubeId"`
-		baseReqHeaders
-	}
-	// message response
-)
-
-type (
-	searchReq {
-		SearchQuery string `form:"searchQuery"`
-		Type        string `form:"type,options=channel|video|all,default=all"`
-		baseReqHeaders
-	}
-	searchResp {
-		Content  []SearchResult `json:"content"`
-		NextPage int            `json:"nextPage"`
-	}
-)
-
-type (
-	suggestionReq {
-		SearchQuery string `form:"searchQuery"`
-		baseReqHeaders
-	}
-
-	suggestionResp {
-		Content []string `json:"content"`
-	}
-)
-
-type (
-	subscriptionsReq {
-		baseReqHeaders
-		pagination
-	}
-
-	subscriptionsResp {
-		Content  []SubscriptionVideo `json:"content"`
-		NextPage int                 `json:"nextPage"`
-	}
-)
-
-type (
-	feedChannelsReq {
-		baseReqHeaders
-		pagination
-	}
-
-	feedChannelsResp {
-		Content  []SubscribedChannel `json:"content"`
-		NextPage int                 `json:"nextPage"`
-	}
-)
-
-type (
-	likedVideosReq {
-		baseReqHeaders
-		pagination
-	}
-
-	likedVideosResp {
-		Content    []FeedVideo `json:"content"`
-		TotalCount int         `json:"totalCount"`
-		NextPage   int         `json:"nextPage"`
-	}
-)
-
-type (
-	historyReq {
-		baseReqHeaders
-		pagination
-	}
-
-	historyResp {
-		Content  []FeedVideo `json:"content"`
-		NextPage int         `json:"nextPage"`
-	}
-)
-
-type (
-	// base request headers
-
-	libraryResp {
-		History     []FeedVideo       `json:"history"`
-		Playlists   []ChannelPlaylist `json:"playlists"`
-		LikedVideos []FeedVideo       `json:"liked"`
-	}
-)
-
-type (
-	sendFeedbackReq {
-		Image       string `form:"image"`
-		Description string `form:"description"`
-		baseReqHeaders
-	}
-	// message response
-)
-
-type (
-	sendReportReq {
-		ContentType  string `json:"content,options=channel|video"`
-		ReportTypeId int    `json:"reportTypeId"`
-		YoutubeId    string `json:"youtube"`
-		baseReqHeaders
-	}
-	// message response
-)
-
-type (
-	getReportTypesReq {
-		Hl string `form:"hl,options=ru|en|tm,default=ru"`
-		baseReqHeaders
-	}
-
-	getReportTypesResp {
-		Content []ReportType `json:"content"`
-	}
-)
-
-type (
-	getReportsReq {
-		pagination
-		baseReqHeaders
-	}
-	getReportsResp {
-		Content  []Report `json:"content"`
-		NextPage int      `json:"nextPage"`
-	}
-)
-
-type (
-	getGenresReq {
-		Hl string `form:"hl,options=ru|en|tm,default=ru""`
-		baseReqHeaders
-	}
-
-	getGenresResp {
-		Content []Genre `json:"content"`
-	}
-)
+import "request_model.api"
 
 @server (
 	group: channels
 	prefix: /v1
-	middleware: versionVerification,optionalAuthMiddleware
+	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
 	@handler GetChannelInfo
@@ -368,7 +21,7 @@ service beletvideo-server {
 @server (
 	group: trending
 	prefix: /v1
-	middleware: versionVerification,optionalAuthMiddleware
+	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
 	@handler GetTrendingList
@@ -381,7 +34,7 @@ service beletvideo-server {
 @server (
 	group: videos
 	prefix: /v1
-	middleware: versionVerification,optionalAuthMiddleware
+	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
 	@handler GetVideoInfo
@@ -391,7 +44,7 @@ service beletvideo-server {
 @server (
 	group: playlists
 	prefix: /v1
-	middleware: versionVerification,optionalAuthMiddleware
+	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
 	@handler GetPlaylistInfo
@@ -404,7 +57,7 @@ service beletvideo-server {
 @server (
 	group: userPlaylists
 	prefix: /v1
-	middleware: versionVerification,requiredAuthMiddleware
+	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
 	@handler GetUserPlaylists
@@ -417,7 +70,7 @@ service beletvideo-server {
 @server (
 	group: search
 	prefix: /v1
-	middleware: versionVerification,optionalAuthMiddleware
+	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
 	@handler Search
@@ -430,7 +83,7 @@ service beletvideo-server {
 @server (
 	group: feed
 	prefix: /v1
-	middleware: versionVerification,requiredAuthMiddleware
+	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
 	@handler Subscriptions
@@ -452,7 +105,7 @@ service beletvideo-server {
 @server (
 	group: reports
 	prefix: /v1
-	middleware: versionVerification,requiredAuthMiddleware
+	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
 	@handler GetReportTypes
@@ -465,7 +118,7 @@ service beletvideo-server {
 @server (
 	group: userInteractions
 	prefix: /v1
-	middleware: versionVerification,requiredAuthMiddleware
+	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
 	@handler ChannelSubscription

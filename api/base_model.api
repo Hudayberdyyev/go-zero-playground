@@ -1,19 +1,10 @@
 syntax = "v1"
 
 type (
-    messageResp {
-        Message string `json:"message"`
-    }
 
     pagination {
         Page  int `form:"page,range=[1:],default=1"`
         Limit int `form:"limit,range=[1:],default=10"`
-    }
-
-    baseReqHeaders {
-        Token        string `header:"authorization,optional"`
-        PlatformType string `header:"platformType"`
-        VersionCode  int    `header:"versionCode"`
     }
 )
 
