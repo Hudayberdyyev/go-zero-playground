@@ -1,8 +1,8 @@
 # API Gateway
 gen-api:
-	goctl api -o api/gateway.api
+	goctl api -o api/contract/gateway.api
 gen-api-code:
-	goctl api go -api api/gateway.api -dir api/.
+	goctl api go -api api/contract/gateway.api -dir api/. --style go_zero
 run-gateway:
 	go run api/gateway.go -f api/etc/gateway-api.yaml
 

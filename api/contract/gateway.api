@@ -1,6 +1,9 @@
 syntax = "v1"
 
-import "request_model.api"
+import (
+	"request_model.api"
+	"base_model.api"
+)
 
 @server (
 	group: channels
@@ -8,38 +11,20 @@ import "request_model.api"
 	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
+	@doc "Get channel info"
 	@handler GetChannelInfo
 	get /channels/:youtubeId (getChannelInfoReq) returns (getChannelInfoResp)
 
+	@doc "Get channel videos"
 	@handler GetChannelVideos
 	get /channels/:youtubeId/videos (getChannelVideosReq) returns (getChannelVideosResp)
 
+	@doc "Get channel playlists"
 	@handler GetChannelPlaylists
 	get /channels/:youtubeId/playlists (getChannelPlaylistsReq) returns (getChannelPlaylistsResp)
 }
 
-@server (
-	group: trending
-	prefix: /v1
-	middleware: VersionVerification,OptionalAuthMiddleware
-)
-service beletvideo-server {
-	@handler GetTrendingList
-	get /trending (getTrendingListReq) returns (getTrendingListResp)
-
-	@handler GetGenres
-	get /genres (getGenresReq) returns (getGenresResp)
-}
-
-@server (
-	group: videos
-	prefix: /v1
-	middleware: VersionVerification,OptionalAuthMiddleware
-)
-service beletvideo-server {
-	@handler GetVideoInfo
-	get /videos/:youtubeId (getVideoInfoReq) returns (getVideoInfoResp)
-}
+// playlist endpoint group
 
 @server (
 	group: playlists
@@ -47,12 +32,16 @@ service beletvideo-server {
 	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
+	@doc "Get playlist info"
 	@handler GetPlaylistInfo
 	get /playlists/:playlistId (getPlaylistInfoReq) returns (getPlaylistInfoResp)
 
+	@doc "Get playlist videos"
 	@handler GetPlaylistVideos
 	get /playlists/:playlistId/videos (getPlaylistVideosReq) returns (getPlaylistVideosResp)
 }
+
+// user playlist endpoint group
 
 @server (
 	group: userPlaylists
@@ -60,12 +49,29 @@ service beletvideo-server {
 	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
+	@doc "Get user playlists"
 	@handler GetUserPlaylists
 	get /user/playlists (getUserPlaylistsReq) returns (getUserPlaylistsResp)
 
+	@doc "Get list of user playlists(for adding video)"
 	@handler GetUserPlaylistsByVideo
-	get /user/playlists/:videoYoutubeId (getUserPlaylistsReq) returns (getUserPlaylistsResp)
+	get /user/playlists/:videoYoutubeId (getUserPlaylistsByVideoReq) returns (getUserPlaylistsResp)
 }
+
+// videos endpoint group
+
+@server (
+	group: videos
+	prefix: /v1
+	middleware: VersionVerification,OptionalAuthMiddleware
+)
+service beletvideo-server {
+	@doc "Get video info"
+	@handler GetVideoInfo
+	get /videos/:youtubeId (getVideoInfoReq) returns (getVideoInfoResp)
+}
+
+// search endpoint group
 
 @server (
 	group: search
@@ -73,34 +79,33 @@ service beletvideo-server {
 	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
+	@doc "Search"
 	@handler Search
 	get /search (searchReq) returns (searchResp)
 
+	@doc "Search suggestions"
 	@handler Suggestions
 	get /suggestions (suggestionReq) returns (suggestionResp)
 }
 
+// trending endpoint group
+
 @server (
-	group: feed
+	group: trending
 	prefix: /v1
-	middleware: VersionVerification,RequiredAuthMiddleware
+	middleware: VersionVerification,OptionalAuthMiddleware
 )
 service beletvideo-server {
-	@handler Subscriptions
-	get /feed/subscriptions (subscriptionsReq) returns (subscriptionsResp)
+	@doc "Get trending list"
+	@handler GetTrendingList
+	get /trending (getTrendingListReq) returns (getTrendingListResp)
 
-	@handler FeedChannels
-	get /feed/channels (feedChannelsReq) returns (feedChannelsResp)
-
-	@handler LikedVideos
-	get /feed/liked (likedVideosReq) returns (likedVideosResp)
-
-	@handler History
-	get /feed/history (historyReq) returns (historyResp)
-
-	@handler Library
-	get /feed/library (baseReqHeaders) returns (libraryResp)
+	@doc "Get genres"
+	@handler GetGenres
+	get /genres (getGenresReq) returns (getGenresResp)
 }
+
+// report endpoint group
 
 @server (
 	group: reports
@@ -108,12 +113,45 @@ service beletvideo-server {
 	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
+	@doc "Get report types"
 	@handler GetReportTypes
 	get /reports/reasons (getReportTypesReq) returns (getReportTypesResp)
 
+	@doc "Get user reports"
 	@handler GetUserReports
 	get /reports (getReportsReq) returns (getReportsResp)
 }
+
+// feed ednpoint group
+
+@server (
+	group: feed
+	prefix: /v1
+	middleware: VersionVerification,RequiredAuthMiddleware
+)
+service beletvideo-server {
+	@doc "Get subscriptions"
+	@handler Subscriptions
+	get /feed/subscriptions (subscriptionsReq) returns (subscriptionsResp)
+
+	@doc "Get feed channels"
+	@handler FeedsChannels
+	get /feed/channels (feedChannelsReq) returns (feedChannelsResp)
+
+	@doc "Get liked videos"
+	@handler LikedVideos
+	get /feed/liked (likedVideosReq) returns (likedVideosResp)
+
+	@doc "Get history"
+	@handler History
+	get /feed/history (historyReq) returns (historyResp)
+
+	@doc "Get library"
+	@handler Library
+	get /feed/library (baseReqHeaders) returns (libraryResp)
+}
+
+// user interaction endpoints group
 
 @server (
 	group: userInteractions
@@ -121,40 +159,51 @@ service beletvideo-server {
 	middleware: VersionVerification,RequiredAuthMiddleware
 )
 service beletvideo-server {
+	@doc "Channel subscription action"
 	@handler ChannelSubscription
 	post /channels/:youtubeId/subscription (channelSubscriptionReq) returns (messageResp)
 
+	@doc "Add reaction to video"
 	@handler VideoReaction
 	post /videos/:youtubeId/reaction (videoReactionReq) returns (messageResp)
 
+	@doc "Increment video view"
 	@handler VideoIncView
 	post /videos/:youtubeId/view (videoIncViewReq) returns (messageResp)
 
+	@doc "Set watch time to video"
 	@handler VideoSetWatchTime
 	post /videos/:youtubeId/watchedTime (videoSetWatchTimeReq) returns (messageResp)
 
+	@doc "Send feedback"
 	@handler SendFeedBack
 	post /feedbacks (sendFeedbackReq) returns (messageResp)
 
+	@doc "Send report"
 	@handler SendReport
 	post /reports (sendReportReq) returns (messageResp)
 
+	@doc "Create user playlist"
 	@handler CreateUserPlaylist
 	post /user/playlists (createUserPlaylistReq) returns (messageResp)
 
+	@doc "Add video to playlist"
 	@handler AddVideoToPlaylist
 	post /user/playlists/:playlistId/video (playlistVideoActionReq) returns (messageResp)
 
+	@doc "Delete video from user playlist"
 	@handler DeleteVideoFromPlaylist
-	delete /user/playlists/:playlistId/video (playlistVideoActionReq) returns (playlistVideoActionReq)
+	delete /user/playlists/:playlistId/video (playlistVideoActionReq) returns (messageResp)
 
+	@doc "Update user playlist"
 	@handler UpdateUserPlaylist
 	patch /user/playlists/:playlistId (updateUserPlaylistReq) returns (messageResp)
 
+	@doc "Delete user playlist"
 	@handler DeleteUserPlaylist
 	delete /user/playlists/:playlistId (deleteUserPlaylistReq) returns (messageResp)
 
+	@doc "Import channel playlist"
 	@handler ImportYoutubePlaylist
 	post /user/playlists/import (importYoutubePlaylistReq) returns (messageResp)
-
 }

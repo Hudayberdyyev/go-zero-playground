@@ -1,0 +1,165 @@
+syntax = "v1"
+
+type (
+	messageResp {
+		Message string `json:"message"`
+	}
+
+	pagination {
+		Page  int `form:"page,optional,range=[1:1000],default=1"`
+		Limit int `form:"limit,optional,range=[1:1000],default=10"`
+	}
+
+	baseReqHeaders {
+		Token        string `header:"authorization,optional"`
+		PlatformType string `header:"platformType"`
+		VersionCode  int    `header:"versionCode"`
+	}
+)
+
+type (
+	ChannelVideo {
+		YoutubeId    string `json:"youtubeId"`
+		Title        string `json:"title"`
+		Duration     int    `json:"duration"`
+		Thumbnail    string `json:"thumbnail"`
+		ViewsCount   int    `json:"viewsCount"`
+		WatchedTime  int    `json:"watchedTime"`
+		UploadedDate string `json:"uploadedDate"`
+	}
+
+	TrendingVideo {
+		YoutubeId        string `json:"youtubeId"`
+		Title            string `json:"title"`
+		Duration         int    `json:"duration"`
+		Thumbnail        string `json:"thumbnail"`
+		ViewsCount       int    `json:"viewsCount"`
+		Hls              string `json:"hls"`
+		WatchedTime      int    `json:"watchedTime"`
+		UploadedDate     string `json:"uploadedDate"`
+		ChannelName      string `json:"channelName"`
+		ChannelAvatarUrl string `json:"channelAvatarUrl"`
+		ChannelYoutubeId string `json:"channelYoutubeId"`
+	}
+
+	RelatedVideo {
+		YoutubeId        string `json:"youtubeId"`
+		Title            string `json:"title"`
+		Duration         int    `json:"duration"`
+		Thumbnail        string `json:"thumbnail"`
+		ViewsCount       int    `json:"viewsCount"`
+		WatchedTime      int    `json:"watchedTime"`
+		UploadedDate     string `json:"uploadedDate"`
+		ChannelName      string `json:"channelName"`
+		ChannelAvatarUrl string `json:"channelAvatarUrl"`
+		ChannelYoutubeId string `json:"channelYoutubeId"`
+	}
+
+	PlaylistVideo {
+		YoutubeId        string `json:"youtubeId"`
+		Title            string `json:"title"`
+		Thumbnail        string `json:"thumbnail"`
+		Duration         int    `json:"duration"`
+		WatchedTime      int    `json:"watchedTime"`
+		ChannelName      string `json:"channelName"`
+		ChannelYoutubeId string `json:"channelYoutubeId"`
+		ViewsCount       int    `json:"viewsCount"`
+		UploadedDate     string `json:"uploadedDate"`
+	}
+
+	ChannelPlaylist {
+		YoutubeId      string `json:"youtubeId"`
+		Title          string `json:"title"`
+		Thumbnail      string `json:"thumbnail"`
+		VideoYoutubeId string `json:"videoYoutubeId"`
+		VideosCount    int    `json:"videosCount"`
+	}
+
+	UserPlaylistForVideo {
+		Title     string `json:"title"`
+		Thumbnail string `json:"thumbnail"`
+		YoutubeId string `json:"youtubeId"`
+		IsExist   bool   `json:"isExist"`
+	}
+
+	SearchPlaylistVideos {
+		Thumbnail string `json:"thumbnail"`
+		Title     string `json:"title"`
+		Duration  int    `json:"duration"`
+	}
+	SearchResult {
+		Type         string `json:"type"`
+		YoutubeId    string `json:"youtubeId"`
+		Title        string `json:"title"`
+		Description  string `json:"description"`
+		Thumbnail    string `json:"thumbnail"`
+		UploadedDate string `json:"uploadedDate"`
+		// video
+		Duration    int `json:"duration"`
+		ViewsCount  int `json:"viewsCount"`
+		WatchedTime int `json:"watchedTime"`
+		// playlist
+		VideoCount     int                    `json:"videoCount"`
+		PlaylistVideos []SearchPlaylistVideos `json:"playlistVideos"`
+		// playlist&video
+		ChannelYoutubeId string `json:"uploaderYoutubeId"`
+		ChannelName      string `json:"channelName"`
+		ChannelAvatarUrl string `json:"channelAvatarUrl"`
+		// channel
+		IsSubscribed    bool `json:"isSubscribed"`
+		SubscriberCount int  `json:"subscriberCount"`
+	}
+
+	SubscriptionVideo {
+		YoutubeId        string `json:"youtubeId"`
+		Title            string `json:"title"`
+		Duration         int    `json:"duration"`
+		Thumbnail        string `json:"thumbnail"`
+		ViewsCount       int    `json:"viewsCount"`
+		Hls              string `json:"hls"`
+		WatchedTime      int    `json:"watchedTime"`
+		UploadedDate     string `json:"uploadedDate"`
+		ChannelName      string `json:"channelName"`
+		ChannelAvatarUrl string `json:"channelAvatarUrl"`
+		ChannelYoutubeId string `json:"channelYoutubeId"`
+	}
+	SubscribedChannel {
+		YoutubeId       string `json:"youtubeId"`
+		Title           string `json:"title"`
+		SubscriberCount int    `json:"subscriberCount"`
+		VideoCount      int    `json:"videoCount"`
+		Description     string `json:"description"`
+		AvatarUrl       string `json:"avatarUrl"`
+	}
+
+	FeedVideo {
+		YoutubeId   string `json:"youtubeId"`
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		Thumbnail   string `json:"thumbnail"`
+		ChannelName string `json:"channelName"`
+		ViewsCount  int    `json:"viewsCount"`
+		Duration    int    `json:"duration"`
+		WatchedTime int    `json:"watchedTime"`
+	}
+
+	Genre {
+		Id    int    `json:"id"`
+		Title string `json:"title"`
+	}
+
+	ReportType {
+		Id    int    `json:"id"`
+		Title string `json:"title"`
+	}
+
+	Report {
+		Type         string `json:"type"`
+		YoutubeId    string `json:"youtubeId"`
+		Title        string `json:"title"`
+		ChannelName  string `json:"channelName"`
+		ReportReason string `json:"reportReason"`
+		Status       string `json:"status"` //moderator reaction
+		ReportedDate string `json:"reportedDate"`
+	}
+)
